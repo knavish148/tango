@@ -1,0 +1,10 @@
+Call the script in following way:
+
+%% parking slot not in range [1, 99] - will be assigned
+redis-cli --eval /home/ivan/projects/Tango/RedisLua/randParkSlot.lua , 1 0
+
+%% no valid parking slot id - will be assigned
+redis-cli --eval /home/ivan/projects/Tango/RedisLua/randParkSlot.lua , 1 asdasd
+
+%% parking slot in range [1, 99] - will NOT be assigned
+redis-cli --eval /home/ivan/projects/Tango/RedisLua/randParkSlot.lua , 1 15
