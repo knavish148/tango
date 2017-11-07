@@ -1,0 +1,5 @@
+%% Start test suite in terminal by typing:
+
+python -m unittest test
+
+%% Where test is a module name in which Unit test is implemented

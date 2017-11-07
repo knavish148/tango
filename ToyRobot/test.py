@@ -1,7 +1,10 @@
+"""Unit test suite for Toy Robot"""
+
 import unittest
-from toyrobot import *
+import toyrobot
 
 class TestToyRobot(unittest.TestCase):
+    """Test class for Toy Robot program"""
 
     # testdata containing incorrect prog_args
     wrongArgs = [
@@ -49,47 +52,48 @@ class TestToyRobot(unittest.TestCase):
          {'X': 0, 'Y': 0, 'F': 'SOUTH'}, True),
         (['PLACE', '4,0,WEST', 'MOVE', 'MOVE', 'PLACE', '3,4,EAST', 'MOVE', 'REPORT'],
          {'X': 4, 'Y': 4, 'F': 'EAST'}, True),
-        (['PLACE', '5,5,SOUTH', 'REPORT', 'MOVE', 'PLACE', '3,3,WEST', 'RIGHT', 'MOVE', 'RIGHT', 'REPORT'],
+        (['PLACE', '5,5,SOUTH', 'REPORT', 'MOVE', 'PLACE', '3,3,WEST',
+          'RIGHT', 'MOVE', 'RIGHT', 'REPORT'],
          {'X': 3, 'Y': 4, 'F': 'EAST'}, True),
         (['PLACE', '4,4,EAST', 'MOVE', 'RIGHT', 'MOVE', 'MOVE', 'LEFT', 'MOVE'],
          {'X': 4, 'Y': 2, 'F': 'EAST'}, True)
     ]
 
-    # check data has initial value before every test
     def setUp(self):
-        self.assertEqual(getPosition(), {})
-        self.assertEqual(getRobotPlaced(), False)
+        """check data has initial value before every test"""
+        self.assertEqual(toyrobot.get_position(), {})
+        self.assertEqual(toyrobot.get_robot_placed(), False)
 
-    # set global variables to inital state to be safe
     def tearDown(self):
-        setRobotPlaced(False)
-        setPosition({})
+        """set global variables to inital state to be safe"""
+        toyrobot.set_robot_placed(False)
+        toyrobot.set_position({})
 
-    # test program called with wrong program arguments
-    def test_wrongArgs(self):
+    def test_wrong_args(self):
+        """test program called with wrong program arguments"""
         for arg in self.wrongArgs:
 
-            with self.assertRaises(SystemExit) as cm:
-                toyrobot(arg)
-            self.assertEqual(cm.exception.code, 2)
+            with self.assertRaises(SystemExit) as e:
+                toyrobot.toy_robot(arg)
+            self.assertEqual(e.exception.code, 2)
 
-            self.assertEqual(getPosition(), {})
-            self.assertEqual(getRobotPlaced(), False)
+            self.assertEqual(toyrobot.get_position(), {})
+            self.assertEqual(toyrobot.get_robot_placed(), False)
 
-    # test robot placement on the tabletop
-    def test_robotPlacingAndMoving(self):
-        for (arg, expectedPos, expectedPlaced) in self.robotPlacingAndMoving:
-            with self.assertRaises(SystemExit) as cm:
-                toyrobot(arg)
-            self.assertEqual(cm.exception.code, 0)
+    def test_robot_placing_and_moving(self):
+        """test robot placement on the tabletop"""
+        for (arg, expected_pos, expected_placed) in self.robotPlacingAndMoving:
+            with self.assertRaises(SystemExit) as e:
+                toyrobot.toy_robot(arg)
+            self.assertEqual(e.exception.code, 0)
 
-            self.assertEqual(getPosition(), expectedPos)
-            self.assertEqual(getRobotPlaced(), expectedPlaced)
+            self.assertEqual(toyrobot.get_position(), expected_pos)
+            self.assertEqual(toyrobot.get_robot_placed(), expected_placed)
 
-            setPosition({})
-            setRobotPlaced(False)
+            toyrobot.set_position({})
+            toyrobot.set_robot_placed(False)
 
 
 # run the tests
-suite = unittest.TestLoader().loadTestsFromTestCase(TestToyRobot)
-unittest.TextTestRunner(verbosity=2).run(suite)
+SUITE = unittest.TestLoader().loadTestsFromTestCase(TestToyRobot)
+unittest.TextTestRunner(verbosity=2).run(SUITE)
